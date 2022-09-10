@@ -26,9 +26,15 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($credential)) {
-
+            
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard/admin');
+            if (Auth()->user()->role == 'Admin') {
+                return redirect()->intended('/dashboard/admin');
+            } else {
+                return redirect()->intended('/dashboard/pengajar');
+            }
+
+
         }
 
         return back()->with('error', 'Username atau password salah');
@@ -93,7 +99,7 @@ class UserController extends Controller
             //throw $th;
         }
     }
-    
+
     public function edit($id)
     {
         $data = User::where('id', $id)->first();

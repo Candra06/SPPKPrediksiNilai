@@ -166,29 +166,6 @@
         });
     </script>
 
-<script>
-    $('.pengembalian').click(function(e){
-        id = e.target.dataset.id;
-        swal({
-            title: "Yakin ingin menyelesaikan peminjaman?",
-            text: "Peminjaman akan diselesaikan!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Ya",
-            cancelButtonText: "Tidak",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        }, function(isConfirm){
-            if (isConfirm) {
-                swal("Berhasil!", "Berhasil menyelesaikan peminjaman.", "success");
-                $(`#peminjaman${id}`).submit();
-            } else {
-                swal("Cancelled", "Your imaginary file is safe :)", "error");
-            }
-        });
-    });
-</script>
     <script>
         jQuery(document).ready(function() {
             // Switchery

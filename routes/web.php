@@ -22,10 +22,16 @@ use Illuminate\Routing\RouteGroup;
 
 Route::get('/', [UserController::class, 'home'])->name('login');
 Route::post('/login', [UserController::class, 'authenticate']);
-Route::get('/dashboard/admin',[UserController::class, 'dashboardAdmin'])->middleware('auth');
-Route::resource('mapel', MapelController::class);
-Route::resource('kelas', KelasController::class);
-Route::resource('siswa', SiswaController::class);
-Route::resource('nilai', NilaiController::class);
-Route::resource('mengajar', MengajarController::class);
-Route::resource('akun', UserController::class);
+Route::post('/logout', [UserController::class, 'logout']);
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard/admin', [UserController::class, 'dashboardAdmin'])->middleware('auth');
+    Route::resource('mapel', MapelController::class);
+    Route::resource('kelas', KelasController::class);
+    Route::resource('siswa', SiswaController::class);
+    Route::resource('nilai', NilaiController::class);
+    Route::resource('mengajar', MengajarController::class);
+    Route::resource('akun', UserController::class);
+    Route::post('/nilai/inputBy', [NilaiController::class, 'inputBy']);
+    Route::post('/nilai/input', [NilaiController::class, 'input']);
+    Route::get('/detailNilai/{mengajar}/{periode}', [NilaiController::class, 'detail']);
+});

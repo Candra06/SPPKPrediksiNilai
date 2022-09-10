@@ -55,13 +55,17 @@
                                         </div>
                                     </li>
                                     <li role="separator" class="divider"></li>
+                                    {{-- <li role="separator" class="divider"></li>
+                                    <li><a href="{{url('/logout')}}"><i class="fa fa-power-off"></i> Logout</a></li> --}}
                                     <li>
-                                        <form action="/logout" method="POST">
+                                        <form action="{{url('/logout')}}" method="POST">
                                             @csrf
-                                            <i class="fa fa-power-off"></i> Logout</a>
+                                            <div class="row  mx-3">
+                                                <button type="submit" class="btn btn-block btn-danger"><i class="fa fa-power-off"></i> Logout</button>
+                                            </div>
                                         </form>
                                     </li>
-                                    <li><a href="{{url('/logout')}}"></li>
+
                                 </ul>
                             </div>
                         </li>

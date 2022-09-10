@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\Mengajar;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MengajarController extends Controller
@@ -14,7 +17,13 @@ class MengajarController extends Controller
      */
     public function index()
     {
-        //
+        $data = Mengajar::join('kelas', 'kelas.id', 'mengajar.id_kelas')
+            ->join('mapel', 'mapel.id', 'mengajar.id_mapel')
+            ->join('users', 'users.id', 'mengajar.id_pengajar')
+            ->select('mengajar.*', 'kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel', 'users.nama')
+            ->get();
+            
+        return view('admin.mengajar.index', compact('data'));
     }
 
     /**
@@ -24,7 +33,11 @@ class MengajarController extends Controller
      */
     public function create()
     {
-        //
+        $kelas = Kelas::all();
+        $mapel = Mapel::all();
+        $pengajar = User::where('role', 'Pengajar')->get();
+
+        return view('admin.mengajar.add', compact('kelas', 'mapel', 'pengajar'));
     }
 
     /**
@@ -35,7 +48,24 @@ class MengajarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kelas' => 'required',
+            'mapel' => 'required',
+            'pengajar' => 'required',
+            'status' => 'required',
+        ]);
+
+        try {
+            Mengajar::create([
+                'id_kelas' => $request->kelas,
+                'id_mapel' => $request->mapel,
+                'id_pengajar' => $request->pengajar,
+                'status' => $request->status,
+            ]);
+            return redirect('/mengajar')->with('success', 'Berhasil menambah data');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -57,7 +87,10 @@ class MengajarController extends Controller
      */
     public function edit(Mengajar $mengajar)
     {
-        //
+        $kelas = Kelas::all();
+        $mapel = Mapel::all();
+        $pengajar = User::where('role', 'Pengajar')->get();
+        return view('admin.mengajar.edit', compact('mengajar','kelas','mapel','pengajar'));
     }
 
     /**
@@ -69,7 +102,24 @@ class MengajarController extends Controller
      */
     public function update(Request $request, Mengajar $mengajar)
     {
-        //
+        $request->validate([
+            'kelas' => 'required',
+            'mapel' => 'required',
+            'pengajar' => 'required',
+            'status' => 'required',
+        ]);
+
+        try {
+            Mengajar::where('id', $mengajar->id)->update([
+                'id_kelas' => $request->kelas,
+                'id_mapel' => $request->mapel,
+                'id_pengajar' => $request->pengajar,
+                'status' => $request->status,
+            ]);
+            return redirect('/mengajar')->with('success', 'Berhasil mengubah data');
+        } catch (\Throwable $th) {
+            return redirect('/mengajar/add')->with('error', 'Gagal mengubah data');
+        }
     }
 
     /**
@@ -80,6 +130,11 @@ class MengajarController extends Controller
      */
     public function destroy(Mengajar $mengajar)
     {
-        //
+       try {
+        Mengajar::where('id', $mengajar->id)->delete();
+        return redirect('/mengajar')->with('success', 'Berhasil menghapus data');
+       } catch (\Throwable $th) {
+        return redirect('/mengajar')->with('success', 'Gagal menghapus data');
+       }
     }
 }

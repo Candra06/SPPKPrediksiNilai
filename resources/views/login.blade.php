@@ -17,7 +17,7 @@
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
 
-    <section id="wrapper" class="light-blue">
+    <section id="wrapper" class="light-blue" style="min-height: 100%">
         <div class="login-register">
             <div class="login-box card">
                 <div class="card-body">
