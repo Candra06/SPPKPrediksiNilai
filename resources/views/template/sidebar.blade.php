@@ -25,14 +25,18 @@
                     <li> <a class="waves-effect waves-dark" href="{{ url('/mapel') }}" aria-expanded="false"><i
                                 class="mdi mdi-widgets"></i><span class="hide-menu">Mapel</span></a>
                     </li>
-                    <li> <a class="waves-effect waves-dark" href="{{ url('/siswa') }}" aria-expanded="false"><i
-                                class="fa fas fa-graduation-cap"></i><span class="hide-menu">Siswa</span></a>
-                    </li>
+                    
                     <li> <a class="waves-effect waves-dark" href="{{ url('/kelas') }}" aria-expanded="false"><i
                                 class="fa far fa-building"></i><span class="hide-menu">Kelas</span></a>
                     </li>
                     <li> <a class="waves-effect waves-dark" href="{{ url('/mengajar') }}" aria-expanded="false"><i
                                 class="fa fa-book"></i><span class="hide-menu">Mengajar</span></a>
+                    </li>
+                    <li> <a class="waves-effect waves-dark" href="{{ url('/siswa') }}" aria-expanded="false"><i
+                                class="fa fas fa-graduation-cap"></i><span class="hide-menu">Siswa</span></a>
+                    </li>
+                    <li> <a class="waves-effect waves-dark" href="{{ url('/nilai') }}" aria-expanded="false"><i
+                                class="fa fas fa-graduation-cap"></i><span class="hide-menu">Nilai</span></a>
                     </li>
                     <li> <a class="waves-effect waves-dark" href="{{ url('/akun') }}" aria-expanded="false"><i
                                 class="mdi mdi-account-box"></i><span class="hide-menu">Pengguna</span></a>

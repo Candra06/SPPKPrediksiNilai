@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Mengajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,6 +52,13 @@ class UserController extends Controller
     public function dashboardAdmin()
     {
         return view('admin.dashboard');
+    }
+
+    public function dashboardPengajar()
+    {
+        $kelas = Mengajar::where('id_pengajar', Auth::user()->id)->count();
+        
+        return view('admin.dashboardPengajar', compact('kelas'));
     }
 
     public function index()

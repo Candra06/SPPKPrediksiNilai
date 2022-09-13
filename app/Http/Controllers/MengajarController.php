@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Mengajar;
 use App\Models\User;
+use App\Models\Nilai;
 use Illuminate\Http\Request;
 
 class MengajarController extends Controller
@@ -68,23 +69,37 @@ class MengajarController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Mengajar  $mengajar
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Mengajar $mengajar)
+    public function dataMengajar(Mengajar $mengajar)
     {
-        //
+        try {
+            
+            $data = Mengajar::join('mapel', 'mapel.id', 'mengajar.id_mapel')
+                    ->join('kelas', 'kelas.id', 'mengajar.id_kelas')
+                    ->select('mengajar.*', 'kelas.kelas', 'kelas.id as id_kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
+                    ->where('mengajar.id_pengajar', Auth()->user()->id)
+                    ->get();
+            return view('admin.mengajar.dataMengajar', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Mengajar  $mengajar
-     * @return \Illuminate\Http\Response
-     */
+    public function dataNilai($idKelas)
+    {
+        try {
+            $data = Nilai::join('mengajar', 'mengajar.id', 'nilai.id_mengajar')
+                    ->join('kelas', 'kelas.id', 'mengajar.id_kelas')     
+                    ->join('siswa', 'siswa.id', 'nilai.id_siswa')                    
+                    ->join('mapel', 'mapel.id', 'mengajar.id_mapel')     
+                    ->select('siswa.nama_siswa', 'kelas.kelas', 'kelas.nama_rombel', 'nilai.*', 'mapel.nama_mapel')   
+                    ->where('nilai.id_mengajar', $idKelas)
+                    ->get();
+            return view('admin.mengajar.dataNilai', compact('data'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function edit(Mengajar $mengajar)
     {
         $kelas = Kelas::all();
@@ -93,13 +108,6 @@ class MengajarController extends Controller
         return view('admin.mengajar.edit', compact('mengajar','kelas','mapel','pengajar'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Mengajar  $mengajar
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Mengajar $mengajar)
     {
         $request->validate([
@@ -122,12 +130,6 @@ class MengajarController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Mengajar  $mengajar
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Mengajar $mengajar)
     {
        try {

@@ -24,7 +24,8 @@ Route::get('/', [UserController::class, 'home'])->name('login');
 Route::post('/login', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/admin', [UserController::class, 'dashboardAdmin'])->middleware('auth');
+    Route::get('/dashboard/admin', [UserController::class, 'dashboardAdmin']);
+    Route::get('/dashboard/pengajar', [UserController::class, 'dashboardPengajar']);
     Route::resource('mapel', MapelController::class);
     Route::resource('kelas', KelasController::class);
     Route::resource('siswa', SiswaController::class);
@@ -34,4 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/nilai/inputBy', [NilaiController::class, 'inputBy']);
     Route::post('/nilai/input', [NilaiController::class, 'input']);
     Route::get('/detailNilai/{mengajar}/{periode}', [NilaiController::class, 'detail']);
+    Route::get('/dataMengajar', [MengajarController::class, 'dataMengajar']);
+    Route::get('/dataNilai/{idKelas}', [MengajarController::class, 'dataNilai']);
+    Route::get('/prediksi/{idKelas}', [MengajarController::class, 'prediksi']);
 });
