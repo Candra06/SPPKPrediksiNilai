@@ -42,10 +42,10 @@
                                 class="mdi mdi-account-box"></i><span class="hide-menu">Pengguna</span></a>
                     </li>
                 @else
-                    <li> <a class="waves-effect waves-dark" href="{{ url('/backend') }}" aria-expanded="false"><i
+                    <li> <a class="waves-effect waves-dark" href="{{ url('/dashboard/pengajar') }}" aria-expanded="false"><i
                                 class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a>
                     </li>
-                    <li> <a class="waves-effect waves-dark" href="{{ url('/kategori') }}" aria-expanded="false"><i
+                    <li> <a class="waves-effect waves-dark" href="{{ url('/dataMengajar') }}" aria-expanded="false"><i
                                 class="mdi mdi-widgets"></i><span class="hide-menu">Data Mengajar</span></a>
                     </li>
                 @endif
