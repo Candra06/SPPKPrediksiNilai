@@ -37,5 +37,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/detailNilai/{mengajar}/{periode}', [NilaiController::class, 'detail']);
     Route::get('/dataMengajar', [MengajarController::class, 'dataMengajar']);
     Route::get('/dataNilai/{idKelas}', [MengajarController::class, 'dataNilai']);
-    Route::get('/prediksi/{idKelas}', [MengajarController::class, 'prediksi']);
+    Route::get('/prediksi/{idMengajar}', [MengajarController::class, 'prediksi']);
 });

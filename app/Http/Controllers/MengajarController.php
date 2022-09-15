@@ -7,15 +7,12 @@ use App\Models\Mapel;
 use App\Models\Mengajar;
 use App\Models\User;
 use App\Models\Nilai;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MengajarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $data = Mengajar::join('kelas', 'kelas.id', 'mengajar.id_kelas')
@@ -23,15 +20,10 @@ class MengajarController extends Controller
             ->join('users', 'users.id', 'mengajar.id_pengajar')
             ->select('mengajar.*', 'kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel', 'users.nama')
             ->get();
-            
+
         return view('admin.mengajar.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $kelas = Kelas::all();
@@ -41,12 +33,6 @@ class MengajarController extends Controller
         return view('admin.mengajar.add', compact('kelas', 'mapel', 'pengajar'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -72,12 +58,12 @@ class MengajarController extends Controller
     public function dataMengajar(Mengajar $mengajar)
     {
         try {
-            
+
             $data = Mengajar::join('mapel', 'mapel.id', 'mengajar.id_mapel')
-                    ->join('kelas', 'kelas.id', 'mengajar.id_kelas')
-                    ->select('mengajar.*', 'kelas.kelas', 'kelas.id as id_kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
-                    ->where('mengajar.id_pengajar', Auth()->user()->id)
-                    ->get();
+                ->join('kelas', 'kelas.id', 'mengajar.id_kelas')
+                ->select('mengajar.*', 'kelas.kelas', 'kelas.id as id_kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
+                ->where('mengajar.id_pengajar', Auth()->user()->id)
+                ->get();
             return view('admin.mengajar.dataMengajar', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
@@ -87,14 +73,46 @@ class MengajarController extends Controller
     public function dataNilai($idKelas)
     {
         try {
+            $info = Mengajar::leftJoin('kelas', 'kelas.id', 'mengajar.id_kelas',)
+                ->leftJoin('mapel', 'mapel.id', 'mengajar.id_mapel')
+                ->select('kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
+                ->where('mengajar.id', $idKelas)->first();
             $data = Nilai::join('mengajar', 'mengajar.id', 'nilai.id_mengajar')
-                    ->join('kelas', 'kelas.id', 'mengajar.id_kelas')     
-                    ->join('siswa', 'siswa.id', 'nilai.id_siswa')                    
-                    ->join('mapel', 'mapel.id', 'mengajar.id_mapel')     
-                    ->select('siswa.nama_siswa', 'kelas.kelas', 'kelas.nama_rombel', 'nilai.*', 'mapel.nama_mapel')   
-                    ->where('nilai.id_mengajar', $idKelas)
-                    ->get();
-            return view('admin.mengajar.dataNilai', compact('data'));
+                ->join('kelas', 'kelas.id', 'mengajar.id_kelas')
+                ->join('siswa', 'siswa.id', 'nilai.id_siswa')
+                ->join('mapel', 'mapel.id', 'mengajar.id_mapel')
+                ->select('siswa.nama_siswa', 'kelas.kelas', 'kelas.nama_rombel', 'nilai.*', 'mapel.nama_mapel')
+                ->where('nilai.id_mengajar', $idKelas)
+                ->get();
+
+            return view('admin.mengajar.dataNilai', compact('data', 'info', 'idKelas'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function prediksi($idMengajar)
+    {
+        try {
+            $mengajar = Mengajar::where('id', $idMengajar)->first();
+            $siswa = Siswa::where('id_kelas', $mengajar->id_kelas)->get();
+            $pred = [];
+            foreach ($siswa as $sw) {
+                $sum = Nilai::where('id_siswa', $sw->id)
+                    ->sum('nilai');
+                // $periode = Nilai::where('id_siswa', $sw->id)
+                //     ->count('nilai');
+                $tmp['id_siswa'] = $sw->id;
+                $tmp['nama_siswa'] = $sw->nama_siswa;
+                $tmp['prediksi'] = $sum / 4;
+                array_push($pred, $tmp);
+            }
+            // return $pred;
+            $data = Mengajar::leftJoin('kelas', 'kelas.id', 'mengajar.id_kelas',)
+                ->leftJoin('mapel', 'mapel.id', 'mengajar.id_mapel')
+                ->select('kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
+                ->where('mengajar.id', $idMengajar)->first();
+            return view('admin.mengajar.dataPrediksi', compact('pred', 'data'));
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -105,7 +123,7 @@ class MengajarController extends Controller
         $kelas = Kelas::all();
         $mapel = Mapel::all();
         $pengajar = User::where('role', 'Pengajar')->get();
-        return view('admin.mengajar.edit', compact('mengajar','kelas','mapel','pengajar'));
+        return view('admin.mengajar.edit', compact('mengajar', 'kelas', 'mapel', 'pengajar'));
     }
 
     public function update(Request $request, Mengajar $mengajar)
@@ -132,11 +150,11 @@ class MengajarController extends Controller
 
     public function destroy(Mengajar $mengajar)
     {
-       try {
-        Mengajar::where('id', $mengajar->id)->delete();
-        return redirect('/mengajar')->with('success', 'Berhasil menghapus data');
-       } catch (\Throwable $th) {
-        return redirect('/mengajar')->with('success', 'Gagal menghapus data');
-       }
+        try {
+            Mengajar::where('id', $mengajar->id)->delete();
+            return redirect('/mengajar')->with('success', 'Berhasil menghapus data');
+        } catch (\Throwable $th) {
+            return redirect('/mengajar')->with('success', 'Gagal menghapus data');
+        }
     }
 }

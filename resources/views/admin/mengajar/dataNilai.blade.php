@@ -33,8 +33,8 @@
             </div>
             @endif
             <div class="card-body">
-                <h4 class="card-title">Daftar Nilai Mata Pelajaran {{$data[0]->nama_mapel}} Kelas {{ $data[0]->kelas.$data[0]->nama_rombel }}</h4>
-                <a href="{{ url('/prediksi')}}"><button class="btn btn-primary pull-right">Tampilkan Prediksi Nilai</button></a>
+                <h4 class="card-title">Daftar Nilai Mata Pelajaran {{$info->nama_mapel}} Kelas {{ $info->kelas.$info->nama_rombel }}</h4>
+                <a href="{{ url('/prediksi/'.$idKelas)}}"><button class="btn btn-primary pull-right">Tampilkan Prediksi Nilai</button></a>
                 <div class="table-responsive m-t-40">
                     <table id="myTable" class="table table-bordered table-striped">
                         <thead>
