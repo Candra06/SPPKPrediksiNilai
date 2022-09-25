@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('nip', 45);
             $table->string('nuptk', 45);
-            $table->string('nama', 30);
+            $table->string('nama', 100);
             $table->string('username',30)->unique();
             $table->string('password');
             $table->enum('role',['Admin','Pengajar']);

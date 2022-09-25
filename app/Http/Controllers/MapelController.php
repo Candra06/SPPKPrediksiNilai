@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Mapel;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportMapel;
 
 class MapelController extends Controller
 {
@@ -72,5 +74,16 @@ class MapelController extends Controller
     {
         Mapel::where('id', $mapel->id)->delete();
         return redirect('/mapel')->with('success', 'Berhasil menghapus mata pelajaran');
+    }
+
+    public function importMapel(Request $request)
+    {
+        try {
+            Excel::import(new ImportMapel, $request->file('fileMapel')->store('files'));
+
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

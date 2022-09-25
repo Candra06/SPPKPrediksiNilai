@@ -24,6 +24,12 @@ Route::get('/', [UserController::class, 'home'])->name('login');
 Route::post('/login', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::middleware('auth')->group(function () {
+    Route::post('/importUsers', [UserController::class, 'importUsers']);
+    Route::post('/importMapel', [MapelController::class, 'importMapel']);
+    Route::post('/importKelas', [KelasController::class, 'importKelas']);
+    Route::post('/importMengajar', [MengajarController::class, 'importMengajar']);
+    Route::post('/importNilai', [NilaiController::class, 'importNilai']);
+    Route::get('/file-import',[UserController::class,'importView']);
     Route::get('/dashboard/admin', [UserController::class, 'dashboardAdmin']);
     Route::get('/dashboard/pengajar', [UserController::class, 'dashboardPengajar']);
     Route::resource('mapel', MapelController::class);

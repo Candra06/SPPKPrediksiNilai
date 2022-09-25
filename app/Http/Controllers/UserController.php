@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportUser;
 use App\Models\User;
 use App\Models\Mengajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -21,13 +24,14 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
+
        $credential =  $request->validate([
             'username' => 'required',
             'password' => 'required',
         ]);
 
         if (Auth::attempt($credential)) {
-            
+
             $request->session()->regenerate();
             if (Auth()->user()->role == 'Admin') {
                 return redirect()->intended('/dashboard/admin');
@@ -57,7 +61,7 @@ class UserController extends Controller
     public function dashboardPengajar()
     {
         $kelas = Mengajar::where('id_pengajar', Auth::user()->id)->count();
-        
+
         return view('admin.dashboardPengajar', compact('kelas'));
     }
 
@@ -159,5 +163,21 @@ class UserController extends Controller
     {
         User::where('id', $id)->delete();
         return redirect('/akun')->with('success', 'Berhasil menghapus data');
+    }
+
+    public function importView()
+    {
+        return view('admin.import.importView');
+    }
+
+    public function importUsers(Request $request)
+    {
+        try {
+            Excel::import(new ImportUser, $request->file('fileUsers')->store('files'));
+
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
