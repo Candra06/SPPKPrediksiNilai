@@ -53,7 +53,7 @@
                                 <td>{{ $no+1 }}</td>
                                 <td>{{ $dt->nis }}</td>
                                 <td>{{ $dt->nama_siswa }}</td>
-                                <td>{{ $dt->id_kelas }}</td>
+                                <td>{{ $dt->kelas.''.$dt->nama_rombel }}</td>
                                 <td>{{ $dt->status }}</td>
                                 <td>
                                     <a href="{{ url('/siswa/'.$dt->id.'/edit') }}" class="btn btn-info"><i class="mdi mdi-pencil"></i>Edit</a>

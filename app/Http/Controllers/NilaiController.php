@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportNilai;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Mengajar;
@@ -9,6 +10,7 @@ use App\Models\Nilai;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NilaiController extends Controller
 {
@@ -136,6 +138,17 @@ class NilaiController extends Controller
             return redirect('/detailNilai/' . $nilai->id_mengajar.'/'.$nilai->periode,)->with('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
             return redirect('/detailNilai/' . $nilai->id_mengajar.'/'.$nilai->periode,)->with('success', 'Gagal menghapus data');
+        }
+    }
+
+    public function importNilai(Request $request)
+    {
+        try {
+            Excel::import(new ImportNilai, $request->file('fileNilai')->store('files'));
+
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

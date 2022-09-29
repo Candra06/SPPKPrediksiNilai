@@ -15,9 +15,24 @@
             </div>
 
         </div>
+        <div class="row">
+            @if (session('success'))
+                <div class="card-body">
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
 
         {{-- import akun --}}
         <div class="row">
+
             <div class="col-md-6">
                 <div class="card card-outline-info">
                     <div class="card-header">
@@ -69,9 +84,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Import Mapel</label>
-                                        <input type="file" name="fileMapels"
+                                        <input type="file" name="fileMapel"
                                             class="form-control  @error('status') is-invalid @enderror">
-                                        @error('fileMapels')
+                                        @error('fileMapel')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -170,20 +185,20 @@
         <div class="col-lg-6">
             <div class="card card-outline-info">
                 <div class="card-header">
-                    <h4 class="m-b-0 text-white">Import Nilai</h4>
+                    <h4 class="m-b-0 text-white">Import Siswa</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ url('importNilai') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('importSiswa') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-body">
                             <div class="row ">
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label">Import Nilai</label>
-                                        <input type="file" name="fileNilai"
+                                        <label class="control-label">Import Siswa</label>
+                                        <input type="file" name="fileSiswa"
                                             class="form-control @error('status') is-invalid @enderror">
-                                        @error('fileNilai')
+                                        @error('fileSiswa')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -200,6 +215,42 @@
                             </div>
                     </form>
                 </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6">
+        <div class="card card-outline-info">
+            <div class="card-header">
+                <h4 class="m-b-0 text-white">Import Nilai</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url('importNilai') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-body">
+                        <div class="row ">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Import Nilai</label>
+                                    <input type="file" name="fileNilai"
+                                        class="form-control @error('status') is-invalid @enderror">
+                                    @error('fileNilai')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button type="submit"
+                                class="btn btn-info waves-effect waves-light pull-right">Import</button>
+                        </div>
+                </form>
             </div>
         </div>
     </div>

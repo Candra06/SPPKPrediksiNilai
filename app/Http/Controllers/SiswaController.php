@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportSiswa;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
 
     public function index()
     {
-        $data = Siswa::all();
+        $data = Siswa::leftJoin('kelas', 'kelas.id', 'siswa.id_kelas')
+            ->select('siswa.*', 'kelas.kelas', 'kelas.nama_rombel')
+            ->get();
         return view('admin.siswa.index', compact('data'));
     }
 
@@ -75,5 +79,16 @@ class SiswaController extends Controller
     {
         Siswa::where('id', $siswa->id)->delete();
         return redirect('/siswa')->with('success', 'Berhasil menghapus data');
+    }
+
+    public function importSiswa(Request $request)
+    {
+        try {
+            Excel::import(new ImportSiswa, $request->file('fileSiswa')->store('files'));
+
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

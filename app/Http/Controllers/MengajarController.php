@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportMengajar;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Mengajar;
@@ -10,6 +11,7 @@ use App\Models\Nilai;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MengajarController extends Controller
 {
@@ -155,6 +157,16 @@ class MengajarController extends Controller
             return redirect('/mengajar')->with('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
             return redirect('/mengajar')->with('success', 'Gagal menghapus data');
+        }
+    }
+
+    public function importMengajar(Request $request)
+    {
+        try {
+            Excel::import(new ImportMengajar, $request->file('fileMengajar')->store('files'));
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }
