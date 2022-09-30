@@ -101,15 +101,16 @@ class MengajarController extends Controller
             $pred = [];
             foreach ($siswa as $sw) {
                 $sum = Nilai::where('id_siswa', $sw->id)
+                    ->where('id_mengajar', $idMengajar)
                     ->sum('nilai');
-                // $periode = Nilai::where('id_siswa', $sw->id)
-                //     ->count('nilai');
+
                 $tmp['id_siswa'] = $sw->id;
                 $tmp['nama_siswa'] = $sw->nama_siswa;
                 $tmp['prediksi'] = $sum / 4;
+
                 array_push($pred, $tmp);
             }
-            // return $pred;
+            
             $data = Mengajar::leftJoin('kelas', 'kelas.id', 'mengajar.id_kelas',)
                 ->leftJoin('mapel', 'mapel.id', 'mengajar.id_mapel')
                 ->select('kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel')
