@@ -17,15 +17,25 @@ class NilaiController extends Controller
 
     public function index()
     {
+
         $data = Nilai::join('mengajar', 'mengajar.id', 'nilai.id_mengajar')
             ->join('mapel', 'mapel.id', 'mengajar.id_mapel')
             ->join('kelas', 'kelas.id', 'mengajar.id_kelas')
-            ->select(DB::raw('COUNT(nilai.id_mengajar)'), 'nilai.id_mengajar', 'kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel', 'nilai.periode')
-            ->groupBy('nilai.id_mengajar', 'nilai.periode')
+            ->select( 'nilai.id_mengajar', 'kelas.kelas', 'kelas.nama_rombel', 'mapel.nama_mapel', 'nilai.periode')
+
             ->get();
+
         $kelas = Kelas::all();
         $mapel = Mapel::all();
+        $tmp = [];
+        $data = $data->toArray();
+        foreach ($data as $index => $key) {
+            if(!in_array($key, $tmp))
+                array_push($tmp, $key);
+        }
 
+        $data = $tmp;
+        // return $data;
         return view('admin.nilai.index', compact('kelas', 'mapel', 'data'));
     }
 

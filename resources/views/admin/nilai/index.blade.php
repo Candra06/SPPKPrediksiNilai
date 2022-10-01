@@ -51,20 +51,13 @@
                                 @foreach ($data as $no => $dt)
                             <tr>
                                 <td>{{ $no+1 }}</td>
-                                <td>{{ $dt->kelas.$dt->nama_rombel }}</td>
-                                <td>{{ $dt->nama_mapel }}</td>
-                                <td>Periode-{{ $dt->periode }}</td>
+                                <td>{{ $dt['kelas'].'('.$dt['nama_rombel'].')' }}</td>
+                                <td>{{ $dt['nama_mapel'] }}</td>
+                                <td>Periode-{{ $dt['periode'] }}</td>
                                 <td>
 
-                                    <a href="{{ url('/detailNilai/'.$dt->id_mengajar.'/'.$dt->periode) }}" class="btn btn-success"><i class="mdi mdi-eye"></i> Detail</a>
-                                    {{-- <a href="#" data-id="{{ $dt->id }}" class="btn btn-danger sa-params"><i class="fa fa-trash-o">
-                                        <form action="{{ route('mengajar.destroy', $dt->id) }}" id="delete{{ $dt->id }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        </form>
-                                        </i>
-                                        Hapus
-                                    </a> --}}
+                                    <a href="{{ url('/detailNilai/'.$dt['id_mengajar'].'/'.$dt['periode']) }}" class="btn btn-success"><i class="mdi mdi-eye"></i> Detail</a>
+
                                 </td>
                             </tr>
                             @endforeach
