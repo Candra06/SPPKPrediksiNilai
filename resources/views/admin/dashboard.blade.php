@@ -32,7 +32,7 @@
                     <div class="d-flex flex-row">
                         <div class="round round-lg align-self-center round-info"><i class="fa fa-book"></i></div>
                         <div class="m-l-10 align-self-center">
-                            <h3 class="m-b-0 font-light">10</h3>
+                            <h3 class="m-b-0 font-light">{{$pengajar}}</h3>
                             <h5 class="text-muted m-b-0">Pengajar</h5></div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="d-flex flex-row">
                         <div class="round round-lg align-self-center round-warning"><i class="fa fa-users"></i></div>
                         <div class="m-l-10 align-self-center">
-                            <h3 class="m-b-0 font-lgiht">10</h3>
+                            <h3 class="m-b-0 font-lgiht">{{$siswa}}</h3>
                             <h5 class="text-muted m-b-0">Siswa</h5></div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                     <div class="d-flex flex-row">
                         <div class="round round-lg align-self-center round-primary"><i class="fa  fa-bar-chart-o"></i></div>
                         <div class="m-l-10 align-self-center">
-                            <h3 class="m-b-0 font-lgiht">10</h3>
+                            <h3 class="m-b-0 font-lgiht">{{$kelas}}</h3>
                             <h5 class="text-muted m-b-0">Rombel</h5></div>
                     </div>
                 </div>

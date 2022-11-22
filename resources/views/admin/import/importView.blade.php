@@ -254,6 +254,41 @@
             </div>
         </div>
     </div>
+    
+        <div class="card card-outline-info">
+            <div class="card-header">
+                <h4 class="m-b-0 text-white">Import Nilai Multiple</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url('importNilaiMultiple') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-body">
+                        <div class="row ">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Import Nilai</label>
+                                    <input type="file" name="fileNilai"
+                                        class="form-control @error('status') is-invalid @enderror">
+                                    @error('fileNilai')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button type="submit"
+                                class="btn btn-info waves-effect waves-light pull-right">Import</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
     </div>
 
     </div>

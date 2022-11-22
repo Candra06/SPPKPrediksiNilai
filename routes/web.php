@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/importKelas', [KelasController::class, 'importKelas']);
     Route::post('/importMengajar', [MengajarController::class, 'importMengajar']);
     Route::post('/importNilai', [NilaiController::class, 'importNilai']);
+    Route::post('/importNilaiMultiple', [NilaiController::class, 'importNilaiMultiple']);
     Route::post('/importSiswa', [SiswaController::class, 'importSiswa']);
     Route::get('/file-import',[UserController::class,'importView']);
     Route::get('/dashboard/admin', [UserController::class, 'dashboardAdmin']);

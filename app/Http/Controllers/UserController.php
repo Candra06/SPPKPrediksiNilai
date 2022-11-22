@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ImportUser;
+use App\Models\Kelas;
 use App\Models\User;
 use App\Models\Mengajar;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +57,10 @@ class UserController extends Controller
 
     public function dashboardAdmin()
     {
-        return view('admin.dashboard');
+        $pengajar = User::where('role', 'Pengajar')->count();
+        $siswa = Siswa::count();
+        $kelas = Kelas::count();
+        return view('admin.dashboard', compact('pengajar','siswa','kelas'));
     }
 
     public function dashboardPengajar()

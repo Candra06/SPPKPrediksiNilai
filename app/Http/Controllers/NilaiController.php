@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ImportNilai;
+use App\Imports\ImportNilaiMultiple;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Mengajar;
@@ -155,6 +156,16 @@ class NilaiController extends Controller
     {
         try {
             Excel::import(new ImportNilai, $request->file('fileNilai')->store('files'));
+
+            return redirect('/file-import')->with('success', 'Berhasil import data');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function importNilaiMultiple(Request $request)
+    {
+        try {
+            Excel::import(new ImportNilaiMultiple, $request->file('fileNilai')->store('files'));
 
             return redirect('/file-import')->with('success', 'Berhasil import data');
         } catch (\Throwable $th) {
